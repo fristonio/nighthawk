@@ -279,6 +279,21 @@ function do_docker() {
     ./ci/docker/benchmark_push.sh
 }
 
+function do_nighthawk_docker() {
+    export DOCKER_IMAGE_PREFIX=fristonio/nighthawk
+    export FORCE_DOCKER_PUSH=1
+
+    echo "docker..."
+    cd "${SRCDIR}"
+    # Note that we implicitly test the opt build in CI here.
+    echo "do_docker: Running do_opt_build."
+    do_opt_build
+    echo "do_docker: Running ci/docker/docker_build.sh."
+    ./ci/docker/docker_build.sh
+    echo "do_docker: Running ci/docker/docker_push.sh."
+    ./ci/docker/docker_push.sh
+}
+
 function do_fix_format() {
     echo "fix_format..."
     cd "${SRCDIR}"
@@ -354,6 +369,11 @@ case "$1" in
     docker)
         setup_clang_toolchain
         do_docker
+        exit 0
+    ;;
+    nighthawk_docker)
+        setup_clang_toolchain
+        do_nighthawk_docker
         exit 0
     ;;
     check_format)

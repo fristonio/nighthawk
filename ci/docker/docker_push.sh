@@ -12,7 +12,7 @@ DOCKER_IMAGE_PREFIX="${DOCKER_IMAGE_PREFIX:-envoyproxy/nighthawk}"
 echo "Running docker_push.sh for DOCKER_IMAGE_PREFIX=${DOCKER_IMAGE_PREFIX}, BRANCH=${GH_BRANCH} and SHA1=${GH_SHA1}."
 
 # Only push images for main builds.
-if [[ "${GH_BRANCH}" != "${MAIN_BRANCH}" ]]; then
+if [[ "${GH_BRANCH}" != "${MAIN_BRANCH}" && -z "${FORCE_DOCKER_PUSH}" ]]; then
   echo 'Ignoring non-main branch or tag for docker push.'
   exit 0
 fi
